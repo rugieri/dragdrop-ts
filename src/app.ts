@@ -187,7 +187,7 @@ class ProjectItem extends Component<HTMLUListElement, HTMLLIElement>
     this.configure();
     this.renderContent();
   }
-  dragEndhandler(_event: DragEvent): void {
+  dragEndhandler(event: DragEvent): void {
     throw new Error("Method not implemented.");
   }
   @autobind
