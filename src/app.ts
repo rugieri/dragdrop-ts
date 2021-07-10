@@ -2,23 +2,13 @@
 /// <reference path="project-model.ts" />
 /// <reference path="project-state.ts"/>
 /// <reference path="validation.ts"/>
+/// <reference path="autobind-decorator.ts"/>
 
 namespace App {
  
 
 
-// autobind decorator
-function autobind(_: any, _2: string, descriptor: PropertyDescriptor) {
-  const originalMethod = descriptor.value;
-  const adjDescriptor: PropertyDescriptor = {
-    configurable: true,
-    get() {
-      const boundFn = originalMethod.bind(this);
-      return boundFn;
-    }
-  };
-  return adjDescriptor;
-}
+
 
 // Component Base Class
 abstract class Component<T extends HTMLElement, U extends HTMLElement> {
