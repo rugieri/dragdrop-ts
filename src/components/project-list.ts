@@ -1,13 +1,15 @@
-import { DragTarget } from "../models/drag-drop";
-import { Project, ProjectStatus } from "../models/project";
-import { autobind } from "../decorators/autobind";
-import  Component  from "./base-component";
-import { projectState } from "../state/project-state";
-import { ProjectItem } from "./project-item";
-  
-  // ProjectList Class
- export class ProjectList extends Component<HTMLDivElement, HTMLElement>
-  implements DragTarget {
+import { DragTarget } from '../models/drag-drop.js';
+import { Project, ProjectStatus } from '../models/project.js';
+import { autobind } from '../decorators/autobind.js';
+import Component from './base-component.js';
+import { projectState } from '../state/project-state.js';
+import { ProjectItem } from './project-item.js';
+
+// ProjectList Class
+export class ProjectList
+  extends Component<HTMLDivElement, HTMLElement>
+  implements DragTarget
+{
   assignedProjects: Project[];
 
   constructor(private type: 'active' | 'finished') {
@@ -19,21 +21,23 @@ import { ProjectItem } from "./project-item";
   }
   @autobind
   dragOverHandler(event: DragEvent) {
-    if (event.dataTransfer && event.dataTransfer.types[0] === 'text/plain'){
+    if (event.dataTransfer && event.dataTransfer.types[0] === 'text/plain') {
       event.preventDefault();
       const listEl = this.element.querySelector('ul')!;
       listEl.classList.add('droppable');
     }
-    
   }
   @autobind
   dropHandler(event: DragEvent) {
     const prjId = event.dataTransfer!.getData('text/plain');
-    projectState.moveProject(prjId, this.type === 'active' ? ProjectStatus.Active : ProjectStatus.Finished);
+    projectState.moveProject(
+      prjId,
+      this.type === 'active' ? ProjectStatus.Active : ProjectStatus.Finished
+    );
   }
 
   @autobind
-  dragLeaveHandler(_: DragEvent) {    
+  dragLeaveHandler(_: DragEvent) {
     const listEl = this.element.querySelector('ul')!;
     listEl.classList.remove('droppable');
   }
@@ -44,7 +48,7 @@ import { ProjectItem } from "./project-item";
     this.element.addEventListener('drop', this.dropHandler);
 
     projectState.addListener((projects: Project[]) => {
-      const relevantProjects = projects.filter(prj => {
+      const relevantProjects = projects.filter((prj) => {
         if (this.type === 'active') {
           return prj.status === ProjectStatus.Active;
         }
@@ -68,8 +72,7 @@ import { ProjectItem } from "./project-item";
     )! as HTMLUListElement;
     listEl.innerHTML = '';
     for (const prjItem of this.assignedProjects) {
-      new ProjectItem(this.element.querySelector('ul')!.id, prjItem)
+      new ProjectItem(this.element.querySelector('ul')!.id, prjItem);
     }
   }
-  }
-
+}
